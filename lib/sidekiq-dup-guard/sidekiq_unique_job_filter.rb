@@ -11,12 +11,12 @@ module SidekiqDupGuard
     ##
     # checks if Sidekiq Job is already present in queue
     #
-    #   - If job is already present in queue then Sidekiq job will be ignored
-    #   - If job is not present then Sidekiq job will be queued
+    #   - If job is already present in queue with same arguments then Sidekiq job will be ignored
+    #   - If job is not present with similar arguments then Sidekiq job will be queued
     #
     # @param worker [String]: Worker class name
     # @param item [Hash]: Args passed to create a SidekiqJob
-    #   - item["unique_methods"]: *all* --: All jobs enqueued to a worker should be unique
+    #   - item["unique_methods"]: *all* --: All jobs enqueued to all the function of a worker should be unique
     #   - item["unique_methods"]: [array of method names] --: All jobs enqueued to a method should be unique
     # @param queue [String]:  queue name
     # @param redis_pool [ConnectionPool]: Redis connection pool

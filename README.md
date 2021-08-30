@@ -20,7 +20,7 @@ $ bundle install
 
 ### Configuring at Function level
 
-At a time there can be only one job in queue with same arguments to the method's configured in `unique_methods`.
+At a time there can be only one job in queue with same arguments for the method's configured in `unique_methods`.
 
 #### Worker Example
 
@@ -53,7 +53,7 @@ This will ensure duplicate job's are not enqueued to queue from `FooWorker.perfo
 
 ### Configuring at Worker Level
 
-At a time there can be only one job in queue with same arguments to the all method's of a Worker.
+At a time there can be only one job in queue with same arguments for all the method's of a Worker.
 
 #### Worker Example
 
