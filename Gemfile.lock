@@ -34,9 +34,6 @@ GEM
     rspec-mocks (3.10.2)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
-    rspec-sidekiq (3.1.0)
-      rspec-core (~> 3.0, >= 3.0.0)
-      sidekiq (>= 2.4.0)
     rspec-support (3.10.2)
     sidekiq (6.2.1)
       connection_pool (>= 2.2.2)
@@ -59,7 +56,6 @@ DEPENDENCIES
   activesupport (= 5.2.1)
   byebug
   rspec
-  rspec-sidekiq
   sidekiq-dup-guard!
   simplecov
 
