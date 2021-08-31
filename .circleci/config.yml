@@ -19,3 +19,9 @@ jobs:
 
       - store_artifacts:
           path: coverage
+
+workflows:
+  version: 2.1
+  checks:
+    jobs:
+      - rspec_and_coverage
