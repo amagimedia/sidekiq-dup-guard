@@ -2,6 +2,8 @@ require 'simplecov'
 
 SimpleCov.start
 
+SimpleCov.minimum_coverage 100
+
 require 'rspec'
 require 'sidekiq/processor'
 require 'sidekiq/testing'

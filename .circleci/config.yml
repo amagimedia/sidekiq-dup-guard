@@ -1,0 +1,21 @@
+version: 2.1
+
+jobs:
+  rspec_and_coverage:
+    resource_class: small
+    docker:
+      - image: cimg/ruby:2.7.1
+    working_directory: ~/sidekiq-dup-guard
+    steps:
+      - checkout
+
+      - run:
+          name: Bundle Install
+          command: bundle install
+
+      - run:
+          name: Run Rspec
+          command: bundle exec rspec
+
+      - store_artifacts:
+          path: coverage
