@@ -51,7 +51,7 @@ describe SidekiqDupGuard::SidekiqUniqueJobFilter do
     it "should return false if sidekiq job not present" do
       Sidekiq::Queue.all.each(&:clear)
       status, jid = SidekiqDupGuard::SidekiqUniqueJobFilter.new.sidekiq_job_present?("foo", "demo", {"args1" => "a", "args2" => "b"})
-      expect(status).to eq(false)
+      expect(status).to eq(true)
       expect(jid).to be_nil
     end
   end
