@@ -5,6 +5,7 @@ jobs:
     resource_class: small
     docker:
       - image: cimg/ruby:2.7.1
+      - image: circleci/redis:6.0.6
     working_directory: ~/sidekiq-dup-guard
     steps:
       - checkout
