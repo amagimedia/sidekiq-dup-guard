@@ -13,11 +13,11 @@ require 'sidekiq-dup-guard'
 # At function level
 class FooWorker
   include Sidekiq::Worker
-  sidekiq_options :queue => :foo, :unique_methods => ['demo']
+  sidekiq_options :queue => :foo, :dup_guard_methods => ['demo']
 end
 
 # At Worker level
 class BarWorker
   include Sidekiq::Worker
-  sidekiq_options :queue => :bar, :unique_methods => "all"
+  sidekiq_options :queue => :bar, :dup_guard_methods => "all"
 end

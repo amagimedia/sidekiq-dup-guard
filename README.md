@@ -1,11 +1,9 @@
 # sidekiq-dup-guard
 
-This gem provides additional Sidekiq middleware to prevent duplicate Sidekiq job's getting enqueued to the queue at the same time.
-Uniqueness can be configured at Worker Level or at Function level
+This gem provides a Sidekiq middleware to prevent duplicate jobs from getting enqueued.
+Uniqueness can be configured at worker level or at function level.
 
-## Usage
-
-### Installation
+## Installation
 
 Include the gem in your Application Gemfile:
 
@@ -18,18 +16,18 @@ and then execute
 $ bundle install
 ```
 
-### Configuring at Function level
+## Configuring at Function level
 
-At a time there can be only one job in queue with same arguments for the method's configured in `unique_methods`.
+At a time there can be only one job in queue with same arguments for the method's configured in `dup_guard_methods`.
 
-#### Worker Example
+### Worker Example
 
 ```ruby
 class FooWorker
   include Sidekiq::Workers
 
   # Only method1 and method3 should have unique jobs
-  sidekiq_options :queue => :foo, :unique_methods => ['method1', 'method3']
+  sidekiq_options :queue => :foo, :dup_guard_methods => ['method1', 'method3']
 
   def perform(args)
     # Do work
@@ -51,18 +49,18 @@ end
 
 This will ensure duplicate job's are not enqueued to queue from `FooWorker.perform_async` until `FooWorker.new.perform` is called for `method1` and `method3`. If a job is already present for `method1` and `method3` with same arguments then Sidekiq job will not be enqueued.
 
-### Configuring at Worker Level
+## Configuring at Worker Level
 
 At a time there can be only one job in queue with same arguments for all the method's of a Worker.
 
-#### Worker Example
+### Worker Example
 
 ```ruby
 class FooWorker
   include Sidekiq::Workers
 
   # All the methods of FooWorker should have unique jobs
-  sidekiq_options :queue => :foo, :unique_methods => 'all'
+  sidekiq_options :queue => :foo, :dup_guard_methods => 'all'
 
   def perform(args)
     # Do work

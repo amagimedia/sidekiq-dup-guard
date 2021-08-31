@@ -16,8 +16,8 @@ module SidekiqDupGuard
     #
     # @param worker [String]: Worker class name
     # @param item [Hash]: Args passed to create a SidekiqJob
-    #   - item["unique_methods"]: *all* --: All jobs enqueued to all the function of a worker should be unique
-    #   - item["unique_methods"]: [array of method names] --: All jobs enqueued to a method should be unique
+    #   - item["dup_guard_methods"]: *all* --: All jobs enqueued to all the function of a worker should be unique
+    #   - item["dup_guard_methods"]: [array of method names] --: All jobs enqueued to a method should be unique
     # @param queue [String]:  queue name
     # @param redis_pool [ConnectionPool]: Redis connection pool
     #
@@ -25,7 +25,7 @@ module SidekiqDupGuard
     #
 
     def call(worker, item, queue, redis_pool)
-      if item["unique_methods"].present? and (item["unique_methods"] == "all" or item["unique_methods"].include?(item["args"][0]))
+      if item["dup_guard_methods"].present? and (item["dup_guard_methods"] == "all" or item["dup_guard_methods"].include?(item["args"][0]))
         status, jid = sidekiq_job_present?(queue, item["args"][0], item["args"][1])
         if status
           logger.info("SidekiqUniqueJobFilter#call: #{item["class"]}##{item["args"][0]} '#{item["args"][1]}' job already exists in queue as JID-#{jid}. Skipping enqueuing")
