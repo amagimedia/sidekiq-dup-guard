@@ -25,10 +25,10 @@ module SidekiqDupGuard
     #
 
     def call(worker, item, queue, redis_pool)
-      if item["dup_guard_methods"].present? and (item["dup_guard_methods"] == "all" or item["dup_guard_methods"].include?(item["args"][0]))
+      if (item["dup_guard_methods"] != nil) and !item["dup_guard_methods"].empty? and (item["dup_guard_methods"] == "all" or item["dup_guard_methods"].include?(item["args"][0]))
         status, jid = sidekiq_job_present?(queue, item["args"][0], item["args"][1])
         if status
-          logger.info("SidekiqUniqueJobFilter#call: #{item["class"]}##{item["args"][0]} '#{item["args"][1]}' job already exists in queue as JID-#{jid}. Skipping enqueuing")
+          logger.info("SidekiqDupGuard: #{item["class"]}##{item["args"][0]} '#{item["args"][1]}' job already exists in queue with JID #{jid}, skipping enqueue.")
           return
         end
       end
@@ -42,17 +42,15 @@ module SidekiqDupGuard
     # @param [String] queue
     # @param [String] method
     # @param [Hash] args
-    # @param [Array] ignore_keys
     #
     # @return [Boolean, String]
     #  - when job is present in queue returns true and Sidekiq job ID
     #  - when job is not present in queue returns false and nil
-    def sidekiq_job_present?(queue, method, args, ignore_keys=[])
+    def sidekiq_job_present?(queue, method, args)
       q = Sidekiq::Queue.new(queue)
-      args = args.except(*ignore_keys)
       args.transform_keys!(&:to_s)
       q.each do |j|
-        if (j.args[0] == method.to_s) and (j.args[1].except(*ignore_keys) == args)
+        if (j.args[0] == method.to_s) and (j.args[1] == args)
           return true, j.jid
         end
       end

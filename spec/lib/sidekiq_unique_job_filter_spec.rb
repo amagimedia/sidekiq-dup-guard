@@ -12,28 +12,28 @@ describe SidekiqDupGuard::SidekiqUniqueJobFilter do
       allow_any_instance_of(SidekiqDupGuard::SidekiqUniqueJobFilter).to receive(:sidekiq_job_present?).and_return([true, "e7ec009e89635e542e1da729"])
       allow(SecureRandom).to receive(:hex).and_return([true, "e7ec009e89635e542e1da729"])
       expect{BarWorker.perform_async("demo", {"args1" => "a", "args2" => "b"})}.to change(BarWorker.jobs, :size).by(0)
-      expect(Sidekiq.logger).to have_received(:info).with("SidekiqUniqueJobFilter#call: BarWorker#demo '{\"args1\"=>\"a\", \"args2\"=>\"b\"}' job already exists in queue as JID-e7ec009e89635e542e1da729. Skipping enqueuing")
+      expect(Sidekiq.logger).to have_received(:info).with("SidekiqDupGuard: BarWorker#demo '{\"args1\"=>\"a\", \"args2\"=>\"b\"}' job already exists in queue with JID e7ec009e89635e542e1da729, skipping enqueue.")
     end
 
     it "shouldn't enqueue sidekiq job if job already exists in queue when dup_guard_methods is array of methods" do
       allow_any_instance_of(SidekiqDupGuard::SidekiqUniqueJobFilter).to receive(:sidekiq_job_present?).and_return([true, "e7ec009e89635e542e1da729"])
       allow(SecureRandom).to receive(:hex).and_return([true, "e7ec009e89635e542e1da729"])
       expect{FooWorker.perform_async("demo", {"args1" => "a", "args2" => "b"})}.to change(FooWorker.jobs, :size).by(0)
-      expect(Sidekiq.logger).to have_received(:info).with("SidekiqUniqueJobFilter#call: FooWorker#demo '{\"args1\"=>\"a\", \"args2\"=>\"b\"}' job already exists in queue as JID-e7ec009e89635e542e1da729. Skipping enqueuing").once
+      expect(Sidekiq.logger).to have_received(:info).with("SidekiqDupGuard: FooWorker#demo '{\"args1\"=>\"a\", \"args2\"=>\"b\"}' job already exists in queue with JID e7ec009e89635e542e1da729, skipping enqueue.").once
     end
 
     it "should enqueue sidekiq job if job doesn't exists in queue when dup_guard_methods is all" do
       allow_any_instance_of(SidekiqDupGuard::SidekiqUniqueJobFilter).to receive(:sidekiq_job_present?).and_return([false, nil])
       expect(SecureRandom).to receive(:hex).and_return("e7ec009e89635e542e1da729")
       expect{BarWorker.perform_async("demo", {"args1" => "a", "args2" => "b"})}.to change(BarWorker.jobs, :size).by(1)
-      expect(Sidekiq.logger).to have_received(:info).with("SidekiqUniqueJobFilter#call: BarWorker#demo '{\"args1\"=>\"a\", \"args2\"=>\"b\"}' job already exists in queue as JID-e7ec009e89635e542e1da729. Skipping enqueuing").at_most(0)
+      expect(Sidekiq.logger).to have_received(:info).with("SidekiqDupGuard: BarWorker#demo '{\"args1\"=>\"a\", \"args2\"=>\"b\"}' job already exists in queue with JID e7ec009e89635e542e1da729, skipping enqueue.").at_most(0)
     end
 
     it "should enqueue sidekiq job if job doesn't exists in queue when dup_guard_methods is array of methods" do
       allow_any_instance_of(SidekiqDupGuard::SidekiqUniqueJobFilter).to receive(:sidekiq_job_present?).and_return([false, nil])
       expect(SecureRandom).to receive(:hex).and_return("e7ec009e89635e542e1da729")
       expect{FooWorker.perform_async("demo", {"args1" => "a", "args2" => "b"})}.to change(FooWorker.jobs, :size).by(1)
-      expect(Sidekiq.logger).to have_received(:info).with("SidekiqUniqueJobFilter#call: FooWorker#demo '{\"args1\"=>\"a\", \"args2\"=>\"b\"}' job already exists in queue as JID-e7ec009e89635e542e1da729. Skipping enqueuing").at_most(0)
+      expect(Sidekiq.logger).to have_received(:info).with("SidekiqDupGuard: FooWorker#demo '{\"args1\"=>\"a\", \"args2\"=>\"b\"}' job already exists in queue with JID e7ec009e89635e542e1da729, skipping enqueue.").at_most(0)
     end
   end
 
