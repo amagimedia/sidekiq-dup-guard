@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.authors     = ["Sowmya S K"]
   spec.email       = ['cloudport.team@amagi.com']
   spec.homepage    = "https://github.com/amagimedia/sidekiq-dup-guard"
-  spec.license     = "Apache-2.0"
+  spec.license     = "MIT"
   spec.files       = ["sidekiq-dup-guard.gemspec", "README.md", "CHANGELOG.md", "LICENSE"] + `git ls-files | grep -E '^(lib)'`.split("\n")
 
   spec.add_dependency 'sidekiq'
