@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sidekiq-dup-guard (1.0.1)
+    sidekiq-dup-guard (1.0.2)
       sidekiq
 
 GEM
@@ -11,7 +11,7 @@ GEM
     diff-lcs (1.4.4)
     docile (1.4.0)
     rack (2.2.3)
-    redis (4.4.0)
+    redis (4.5.1)
     rspec (3.10.0)
       rspec-core (~> 3.10.0)
       rspec-expectations (~> 3.10.0)

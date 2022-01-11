@@ -47,6 +47,15 @@ describe SidekiqDupGuard::SidekiqUniqueJobFilter do
       end
     end
 
+    it "should return sidekiq JID if sidekiq job is present when args is empty" do
+      Sidekiq::Queue.all.each(&:clear)
+      Sidekiq::Testing.disable! do
+        FooWorker.perform_async("demo", nil)
+        jid = SidekiqDupGuard::SidekiqUniqueJobFilter.new.get_sidekiq_job("foo", "demo", nil)
+        expect(jid).not_to be_nil
+      end
+    end
+
     it "should return nil if sidekiq job not present" do
       Sidekiq::Queue.all.each(&:clear)
       status, jid = SidekiqDupGuard::SidekiqUniqueJobFilter.new.get_sidekiq_job("foo", "demo", {"args1" => "a", "args2" => "b"})
