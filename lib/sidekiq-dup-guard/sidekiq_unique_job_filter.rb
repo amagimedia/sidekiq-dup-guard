@@ -47,7 +47,7 @@ module SidekiqDupGuard
     #
     def get_sidekiq_job(queue, method, args)
       q = Sidekiq::Queue.new(queue)
-      args.transform_keys!(&:to_s)
+      args.transform_keys!(&:to_s) if (args.class.to_s == "Hash")
       q.each do |j|
         if (j.args[0] == method.to_s) and (j.args[1] == args)
           return j.jid
