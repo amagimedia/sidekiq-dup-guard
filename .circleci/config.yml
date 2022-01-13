@@ -17,6 +17,8 @@ jobs:
             echo $Dummy
             A=$Dummy
             echo $A
+            echo $Dummy > coverage/dummy
+            echo $A > coverage/dummy_a
             echo Dummy
             echo $CIRCLE_BRANCH
 
