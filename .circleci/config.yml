@@ -11,6 +11,16 @@ jobs:
       - checkout
 
       - run:
+          name: check env
+          command: |
+            echo $PWD
+            echo $Dummy
+            A=$Dummy
+            echo $A
+            echo Dummy
+            echo $CIRCLE_BRANCH
+
+      - run:
           name: Bundle Install
           command: bundle install
 
