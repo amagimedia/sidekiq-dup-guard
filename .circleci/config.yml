@@ -21,6 +21,7 @@ jobs:
             echo $A > coverage/dummy_a
             echo Dummy
             echo $CIRCLE_BRANCH
+            ruby script.rb
 
       - run:
           name: Bundle Install
