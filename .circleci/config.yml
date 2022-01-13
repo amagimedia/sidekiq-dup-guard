@@ -17,11 +17,11 @@ jobs:
             echo $Dummy
             A=$Dummy
             echo $A
+            mkdir coverage
             echo $Dummy > coverage/dummy
             echo $A > coverage/dummy_a
             echo Dummy
             echo $CIRCLE_BRANCH
-            mkdir coverage
             ruby script.rb
 
       - run:
