@@ -41,7 +41,7 @@ jobs:
           name: Push Gem
           command: |
             TAG=${CIRCLE_TAG//v}
-            gem push sidekiq-dup-guard-$TAG.gem
+            gem push example-$TAG.gem
 
 workflows:
   version: 2.1
