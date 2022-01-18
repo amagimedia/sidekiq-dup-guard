@@ -11,20 +11,6 @@ jobs:
       - checkout
 
       - run:
-          name: check env
-          command: |
-            echo $PWD
-            echo $Dummy
-            A=$Dummy
-            echo $A
-            mkdir coverage
-            echo $Dummy > coverage/dummy
-            echo $A > coverage/dummy_a
-            echo Dummy
-            echo $CIRCLE_BRANCH
-            ruby script.rb
-
-      - run:
           name: Bundle Install
           command: bundle install
 
@@ -35,8 +21,50 @@ jobs:
       - store_artifacts:
           path: coverage
 
+  build_and_push_gem:
+    resource_class: small
+    docker:
+      - image: cimg/ruby:2.7.1
+    working_directory: ~/sidekiq-dup-guard
+    steps:
+      - checkout
+
+      - run:
+          name: Bundle Install
+          command: bundle install
+
+      - run:
+          name: Build Gem
+          command: gem build sidekiq-dup-guard.gemspec
+
+      - run:
+          name: Push Gem
+          command: |
+            TAG=${CIRCLE_TAG//v}
+            gem push sidekiq-dup-guard-$TAG.gem
+
 workflows:
   version: 2.1
   checks:
     jobs:
       - rspec_and_coverage
+          requires:
+            - hold_for_approval
+      - build_and_push_gem:
+          requires:
+            - rspec_and_coverage
+            - hold_for_approval
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - hold_for_approval:
+          type: approval
+          requires:
+            - rspec_and_coverage
+          #filters:
+            #tags:
+              #only: /^v.*/
+            #branches:
+              #ignore: /.*/
