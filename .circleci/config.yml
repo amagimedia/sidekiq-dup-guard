@@ -47,7 +47,7 @@ workflows:
   version: 2.1
   checks:
     jobs:
-      - rspec_and_coverage
+      - rspec_and_coverage:
           requires:
             - hold_for_approval
       - build_and_push_gem:
