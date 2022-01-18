@@ -47,7 +47,12 @@ workflows:
   version: 2.1
   checks:
     jobs:
-      - rspec_and_coverage
+      - rspec_and_coverage:
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              only: /.*/
       - build_and_push_gem:
           requires:
             - rspec_and_coverage
