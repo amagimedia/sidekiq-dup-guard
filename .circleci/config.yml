@@ -61,8 +61,8 @@ workflows:
               ignore: /.*/
       - hold_for_approval:
           type: approval
-          requires:
-            - rspec_and_coverage
+          #requires:
+            #- rspec_and_coverage
           #filters:
             #tags:
               #only: /^v.*/
