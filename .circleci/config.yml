@@ -47,24 +47,12 @@ workflows:
   version: 2.1
   checks:
     jobs:
-      - rspec_and_coverage:
-          requires:
-            - hold_for_approval
+      - rspec_and_coverage
       - build_and_push_gem:
           requires:
             - rspec_and_coverage
-            - hold_for_approval
           filters:
             tags:
               only: /^v.*/
             branches:
               ignore: /.*/
-      - hold_for_approval:
-          type: approval
-          #requires:
-            #- rspec_and_coverage
-          #filters:
-            #tags:
-              #only: /^v.*/
-            #branches:
-              #ignore: /.*/
