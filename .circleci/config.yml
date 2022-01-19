@@ -34,14 +34,17 @@ jobs:
           command: bundle install
 
       - run:
+          name: Compare version
+          command: ruby .circleci/compare_version.rb
+
+      - run:
           name: Build Gem
-          command: gem build sidekiq-dup-guard.gemspec
+          command: gem build sidekiq-dup-guard.gemspec --output sidekiq-dup-guard.gem
 
       - run:
           name: Push Gem
           command: |
-            TAG=${CIRCLE_TAG//v}
-            gem push sidekiq-dup-guard-$TAG.gem
+            gem push sidekiq-dup-guard.gem
 
 workflows:
   version: 2.1

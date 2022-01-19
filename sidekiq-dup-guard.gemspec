@@ -1,11 +1,8 @@
 require_relative "lib/sidekiq-dup-guard/version"
 
-version = SidekiqDupGuard::VERSION
-version = ENV['CIRCLE_TAG'].sub(/^v/, "") if !ENV['CIRCLE_TAG'].nil?
-
 Gem::Specification.new do |spec|
   spec.name        = 'sidekiq-dup-guard'
-  spec.version     = version
+  spec.version     = SidekiqDupGuard::VERSION
   spec.summary     = "Sidekiq middleware to prevent enqueue of duplicate jobs"
   spec.description = <<-EOS
     This gem provides a Sidekiq middleware to prevent duplicate jobs from getting enqueued to the queue.
