@@ -21,8 +21,46 @@ jobs:
       - store_artifacts:
           path: coverage
 
+  build_and_push_gem:
+    resource_class: small
+    docker:
+      - image: cimg/ruby:2.7.1
+    working_directory: ~/sidekiq-dup-guard
+    steps:
+      - checkout
+
+      - run:
+          name: Bundle Install
+          command: bundle install
+
+      - run:
+          name: Compare version
+          command: ruby .circleci/compare_version.rb
+
+      - run:
+          name: Build Gem
+          command: gem build sidekiq-dup-guard.gemspec --output sidekiq-dup-guard.gem
+
+      - run:
+          name: Push Gem
+          command: |
+            gem push sidekiq-dup-guard.gem
+
 workflows:
   version: 2.1
   checks:
     jobs:
-      - rspec_and_coverage
+      - rspec_and_coverage:
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              only: /.*/
+      - build_and_push_gem:
+          requires:
+            - rspec_and_coverage
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
